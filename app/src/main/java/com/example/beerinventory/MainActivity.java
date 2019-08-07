@@ -32,8 +32,14 @@ import android.widget.Toast;
 
 
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+
+
+public  class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, OnClickListener {
+
+    private Button scanBtn;
+    private TextView formatTxt, contentTxt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,8 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -56,7 +64,47 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        scanBtn = findViewById(R.id.button);
+        formatTxt = findViewById(R.id.textView2);
+        contentTxt = findViewById(R.id.textView3);
+
+        scanBtn.setOnClickListener( this);
+
     }
+
+
+    public void onClick(View v){
+    //respond to clicks
+
+        if(v.getId()==R.id.button){
+            //Scan
+        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+            scanIntegrator.initiateScan();
+        }
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+//retrieve scan result
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+
+        if (scanningResult != null) {
+//we have a result
+            String scanContent = scanningResult.getContents();
+            String scanFormat = scanningResult.getFormatName();
+
+            formatTxt.setText("FORMAT: " + scanFormat);
+            contentTxt.setText("CONTENT: " + scanContent);
+        }
+
+        else{
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "No scan data received!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -113,5 +161,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }
