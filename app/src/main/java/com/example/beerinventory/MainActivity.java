@@ -1,9 +1,11 @@
 package com.example.beerinventory;
 
 import android.os.Bundle;
-
+import java.io.*;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import android.os.Environment;
 import android.view.View;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.io.File;
 
 
 
@@ -34,6 +37,9 @@ public  class MainActivity extends AppCompatActivity
 
     private Button scanBtn;
     private TextView formatTxt, contentTxt;
+
+
+    //***************CREATE DIRECOTRY TO SAVE DATA***************
 
 
     //**************** ADD Manually a beer ******************
