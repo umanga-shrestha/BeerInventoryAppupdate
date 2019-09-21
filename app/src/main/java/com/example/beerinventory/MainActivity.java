@@ -4,23 +4,15 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
 import android.view.View;
-
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-
 import android.view.MenuItem;
-
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.view.Menu;
-
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import android.app.Activity;
@@ -41,6 +33,7 @@ public  class MainActivity extends AppCompatActivity
     private TextView formatTxt, contentTxt;
 
 
+    //**************** ADD Manually a beer ******************
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +44,12 @@ public  class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
             }
-        });
+        }
+        );
+
+
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -73,7 +68,7 @@ public  class MainActivity extends AppCompatActivity
 
     }
 
-
+// ************* SCAN CODE ******************************************************
     public void onClick(View v){
     //respond to clicks
 
@@ -83,6 +78,10 @@ public  class MainActivity extends AppCompatActivity
             scanIntegrator.initiateScan();
         }
     }
+
+
+
+
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -106,6 +105,8 @@ public  class MainActivity extends AppCompatActivity
     }
 
 
+
+    //**************OTHER STUFF***********************************
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -146,7 +147,11 @@ public  class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
+
+
         } else if (id == R.id.nav_gallery) {
+            IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+            scanIntegrator.initiateScan();
 
         } else if (id == R.id.nav_slideshow) {
 
