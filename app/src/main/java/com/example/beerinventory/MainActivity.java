@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+
 /* this is a comment */
 
 
@@ -149,13 +150,17 @@ public  class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-
-
-        } else if (id == R.id.nav_gallery) {
             IntentIntegrator scanIntegrator = new IntentIntegrator(this);
             scanIntegrator.initiateScan();
 
+        } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(MainActivity.this, NewDrinkActitvity.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_slideshow) {
+
+            Intent intent = new Intent(MainActivity.this, NewDrinkActitvity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_tools) {
 
