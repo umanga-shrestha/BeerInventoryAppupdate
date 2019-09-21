@@ -1,5 +1,6 @@
 package com.example.beerinventory;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,13 +8,43 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.nio.file.Files;
+import java.io.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class NewDrinkActitvity extends AppCompatActivity {
     private static final String TAG = NewDrinkActitvity.class.getSimpleName();
 
+    final String PATH = "/storage/emulated/0/Documents/swift_scan_data/";
+    //File dir = new File("/storage/emulated/0/Documents/swift_scan_data/");
+
+    String name;
+    String brand;
+    String location;
+    String volume;
+    String alcohol;
+    String quantity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        File myDir = new File("/storage/emulated/0/swift_scan_data/");
+
+        if (!myDir.exists()) {
+            myDir.mkdir();
+        }
+
+        File stockFile = new File ("/storage/emulated/0/swift_scan_data/breweries.txt");
+
+        try
+        {
+            stockFile.createNewFile();
+        }
+
+        catch (IOException e)
+        {
+            ;
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_drink);
     }
