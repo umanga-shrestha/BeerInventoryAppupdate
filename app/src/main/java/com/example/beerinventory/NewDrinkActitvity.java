@@ -106,7 +106,7 @@ public class NewDrinkActitvity extends AppCompatActivity {
                     fileWriter.flush();
                     fileWriter.close();
                     
-                    finish(); //goes back to the
+                    finish(); //goes back to the main activity screen
                 }
 
                 catch (IOException e) {
