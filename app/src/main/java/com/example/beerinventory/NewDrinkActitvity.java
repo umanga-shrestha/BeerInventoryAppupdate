@@ -89,22 +89,10 @@ public class NewDrinkActitvity extends AppCompatActivity {
 
         catch (IOException e)
         {
-            ;
+
         }
 
-        //test
-        /*fileWriter.write(breweryInfo);
-        fileWriter.write("\r\n");
-        fileWriter.flush();
-        fileWriter.close();*/
-        /*boolean check = (editText_1.getText().toString().isEmpty()
-                | editText_2.getText().toString().isEmpty()
-                | editText_4.getText().toString().isEmpty()
-                | editText_7.getText().toString().isEmpty()
-                | editText_9.getText().toString().isEmpty()
-                | editText_11.getText().toString().isEmpty()
-                | editText_12.getText().toString().isEmpty()
-                | editText_10.getText().toString().isEmpty());*/
+
 
     }
 }

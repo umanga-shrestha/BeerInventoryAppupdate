@@ -6,6 +6,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -20,7 +21,10 @@ import com.google.zxing.integration.android.IntentResult;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
@@ -32,34 +36,42 @@ import java.io.File;
 
 
 public  class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnClickListener {
-
-    private Button scanBtn;
-    private TextView formatTxt, contentTxt;
+        implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    //***************CREATE DIRECOTRY TO SAVE DATA***************
+    //********* Dummy Data List View
+
+    String[] dataArray = {"Bud Light" ,
+            "Miller Lite",
+            "Corona",
+            "Victoria",
+            "Heineken" ,
+            "Jose Cuervo" ,
+            "Tequila Azul"};
 
 
-    //**************** ADD Manually a beer ******************
+
+    //**************** Main Activity Shit******************
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // List View
+        ListView listView = findViewById(R.id.listViewID);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, dataArray);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("Awesome", dataArray[position]);
+            }
+        });
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        }
-        );
-
-
-
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -68,29 +80,14 @@ public  class MainActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        scanBtn = findViewById(R.id.button);
-        formatTxt = findViewById(R.id.textView2);
-        contentTxt = findViewById(R.id.textView3);
-
-        scanBtn.setOnClickListener( this);
 
     }
 
-// ************* SCAN CODE ******************************************************
-    public void onClick(View v){
-    //respond to clicks
-
-        if(v.getId()==R.id.button){
-            //Scan
-        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
-            scanIntegrator.initiateScan();
-        }
-    }
 
 
 
 
-
+//**************** This Retrieves the Data form the Scan ****************************
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 //retrieve scan result
@@ -98,11 +95,9 @@ public  class MainActivity extends AppCompatActivity
 
         if (scanningResult != null) {
 //we have a result
-            String scanContent = scanningResult.getContents();
-            String scanFormat = scanningResult.getFormatName();
 
-            formatTxt.setText("FORMAT: " + scanFormat);
-            contentTxt.setText("CONTENT: " + scanContent);
+            String scanContent = scanningResult.getContents(); // <------- BARCODE
+            String scanFormat = scanningResult.getFormatName();
         }
 
         else{
@@ -111,6 +106,12 @@ public  class MainActivity extends AppCompatActivity
             toast.show();
         }
     }
+
+
+
+
+
+
 
 
 
@@ -163,6 +164,7 @@ public  class MainActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
+
 
         } else if (id == R.id.nav_tools) {
 
