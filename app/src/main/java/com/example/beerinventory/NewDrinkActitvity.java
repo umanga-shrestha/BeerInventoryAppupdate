@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -28,7 +27,6 @@ public class NewDrinkActitvity extends AppCompatActivity {
     private String quantity;
     private String alcohol_percentage;
     private String breweryInfo;
-    private Button addDrinkButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +75,10 @@ public class NewDrinkActitvity extends AppCompatActivity {
         breweryInfo = name + " " + brand + " " + location + " " + style + " " + barcode + " " + volume + " " +
                 quantity + " " + alcohol_percentage;
 
-        final File inventory = new File("/storage/emulated/0/swift_scan_data/breweries.txt");
+        File inventory = new File("/storage/emulated/0/swift_scan_data/breweries.txt");
         //FileWriter fileWriter = new FileWriter(breweryInfo, true);
 
-        /*try
+        try
         {
             FileWriter fileWriter = new FileWriter(inventory, true);
             fileWriter.write(breweryInfo);
@@ -89,32 +87,12 @@ public class NewDrinkActitvity extends AppCompatActivity {
             fileWriter.close();
         }
 
-        catch (IOException e) {
+        catch (IOException e)
+        {
 
-        }*/
+        }
 
-        addDrinkButton = findViewById(R.id.button_addDrink);
-        addDrinkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                try
-                {
-                    FileWriter fileWriter = new FileWriter(inventory, true);
-                    fileWriter.write(breweryInfo);
-                    fileWriter.write("\r\n");
-                    fileWriter.flush();
-                    fileWriter.close();
-                    
-                    finish(); //goes back to the
-                }
 
-                catch (IOException e) {
-
-                }
-            }
-        });
 
     }
-
 }
