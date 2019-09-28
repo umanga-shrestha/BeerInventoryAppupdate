@@ -91,6 +91,8 @@ public class NewDrinkActitvity extends AppCompatActivity {
         {
             ;
         }
+
+        //test
         /*fileWriter.write(breweryInfo);
         fileWriter.write("\r\n");
         fileWriter.flush();
