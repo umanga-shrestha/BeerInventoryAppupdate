@@ -18,12 +18,15 @@ public class NewDrinkActitvity extends AppCompatActivity {
     final String PATH = "/storage/emulated/0/Documents/swift_scan_data/";
     //File dir = new File("/storage/emulated/0/Documents/swift_scan_data/");
 
-    String name;
-    String brand;
-    String location;
-    String volume;
-    String alcohol;
-    String quantity;
+    private String name;
+    private String brand;
+    private String location;
+    private String style;
+    private String barcode;
+    private String volume;
+    private String quantity;
+    private String alcohol_percentage;
+    private String breweryInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +62,47 @@ public class NewDrinkActitvity extends AppCompatActivity {
         final EditText editText_9 = findViewById(R.id.editText_9);
         final EditText editText_12 = findViewById(R.id.editText_12);
         final EditText editText_11 = findViewById(R.id.editText_11);
-        boolean check = (editText_1.getText().toString().isEmpty()
+
+        name = editText_1.getText().toString();
+        brand = editText_2.getText().toString();
+        location = editText_4.getText().toString();
+        style = editText_7.getText().toString();
+        barcode = editText_9.getText().toString();
+        volume = editText_10.getText().toString();
+        quantity = editText_11.getText().toString();
+        alcohol_percentage = editText_12.getText().toString();
+
+        breweryInfo = name + " " + brand + " " + location + " " + style + " " + barcode + " " + volume + " " +
+                quantity + " " + alcohol_percentage;
+
+        File inventory = new File("/storage/emulated/0/swift_scan_data/breweries.txt");
+        //FileWriter fileWriter = new FileWriter(breweryInfo, true);
+
+        try
+        {
+            FileWriter fileWriter = new FileWriter(inventory, true);
+            fileWriter.write(breweryInfo);
+            fileWriter.write("\r\n");
+            fileWriter.flush();
+            fileWriter.close();
+        }
+
+        catch (IOException e)
+        {
+            ;
+        }
+        /*fileWriter.write(breweryInfo);
+        fileWriter.write("\r\n");
+        fileWriter.flush();
+        fileWriter.close();*/
+        /*boolean check = (editText_1.getText().toString().isEmpty()
                 | editText_2.getText().toString().isEmpty()
                 | editText_4.getText().toString().isEmpty()
                 | editText_7.getText().toString().isEmpty()
                 | editText_9.getText().toString().isEmpty()
                 | editText_11.getText().toString().isEmpty()
                 | editText_12.getText().toString().isEmpty()
-                | editText_10.getText().toString().isEmpty());
+                | editText_10.getText().toString().isEmpty());*/
 
     }
 }
