@@ -31,24 +31,10 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-/* this is a comment */
-
-
 
 
 public  class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-
-    //********* Dummy Data List View
-
-    String[] dataArray = {"Bud Light" ,
-            "Miller Lite",
-            "Corona",
-            "Victoria",
-            "Heineken" ,
-            "Jose Cuervo" ,
-            "Tequila Azul"};
 
 
 
@@ -70,18 +56,6 @@ public  class MainActivity extends AppCompatActivity
             }
         });
 
-        /*
-        // List View
-        ListView listView = findViewById(R.id.listViewID);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, dataArray);
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("Awesome", dataArray[position]);
-            }
-        }); */
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -98,26 +72,37 @@ public  class MainActivity extends AppCompatActivity
 
     private ArrayList getListData() {
         ArrayList<ListItem> results = new ArrayList<>();
-        ListItem user1 = new ListItem();
-        user1.setName("Tequila Azul");
-        user1.setDesignation("Some Brand");
-        user1.setLocation("2");
-        results.add(user1);
-        ListItem user2 = new ListItem();
-        user2.setName("Budlight");
-        user2.setDesignation("Budweiser");
-        user2.setLocation("5");
-        results.add(user2);
-        ListItem user3 = new ListItem();
-        user3.setName("Modelo Especial");
-        user3.setDesignation("Grupo Corona");
-        user3.setLocation("12");
-        results.add(user3);
-        user1.setName("Tequila Azul");
-        user1.setDesignation("Some Brand");
-        user1.setLocation("2");
-        results.add(user1);
+
+        String name;
+        String brand;
+        String quant;
+        String [] temp;
+
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(Environment.getExternalStorageDirectory()+"/beerInventory/data.txt"));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                ListItem user = new ListItem();
+                temp = line.split(",");
+                name = temp[0];
+                brand = temp[1];
+                quant = temp[6];
+                user.setName(name);
+                user.setDesignation(brand);
+                user.setLocation(quant);
+                results.add(user);
+            }
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return results;
+
+
+
     }
 
 

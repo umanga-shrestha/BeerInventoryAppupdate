@@ -4,6 +4,8 @@ public class ListItem {
     private String name;
     private String designation;
     private String location;
+
+
     public String getName() {
         return name;
     }
