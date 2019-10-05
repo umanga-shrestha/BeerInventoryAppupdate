@@ -3,6 +3,7 @@ package com.example.beerinventory;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,13 +33,13 @@ public class NewDrinkActitvity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        File myDir = new File("/storage/emulated/0/swift_scan_data/");
+        File myDir = new File(Environment.getExternalStorageDirectory()+"/beerInventory");
 
         if (!myDir.exists()) {
             myDir.mkdir();
         }
 
-        File stockFile = new File ("/storage/emulated/0/swift_scan_data/breweries.txt");
+        File stockFile = new File (Environment.getExternalStorageDirectory()+"/beerInventory/data.txt");
 
         try
         {
@@ -77,7 +78,7 @@ public class NewDrinkActitvity extends AppCompatActivity {
         breweryInfo = name + " " + brand + " " + location + " " + style + " " + barcode + " " + volume + " " +
                 quantity + " " + alcohol_percentage;
 
-        final File inventory = new File("/storage/emulated/0/swift_scan_data/breweries.txt");
+        final File inventory = new File(Environment.getExternalStorageDirectory()+"/beerInventory/data.txt");
         //FileWriter fileWriter = new FileWriter(breweryInfo, true);
 
         /*try
