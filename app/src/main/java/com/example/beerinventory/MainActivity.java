@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
+import java.util.ArrayList;
 
 
 /* this is a comment */
@@ -57,6 +58,19 @@ public  class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        ArrayList userList = getListData();
+        final ListView lv = (ListView) findViewById(R.id.user_list);
+        lv.setAdapter(new CustomListAdapter(this, userList));
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                ListItem user = (ListItem) lv.getItemAtPosition(position);
+                Toast.makeText(MainActivity.this, "Selected :" + " " + user.getName()+", "+ user.getLocation(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        /*
         // List View
         ListView listView = findViewById(R.id.listViewID);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, dataArray);
@@ -67,7 +81,7 @@ public  class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("Awesome", dataArray[position]);
             }
-        });
+        }); */
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -81,6 +95,30 @@ public  class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+
+    private ArrayList getListData() {
+        ArrayList<ListItem> results = new ArrayList<>();
+        ListItem user1 = new ListItem();
+        user1.setName("Tequila Azul");
+        user1.setDesignation("Some Brand");
+        user1.setLocation("2");
+        results.add(user1);
+        ListItem user2 = new ListItem();
+        user2.setName("Budlight");
+        user2.setDesignation("Budweiser");
+        user2.setLocation("5");
+        results.add(user2);
+        ListItem user3 = new ListItem();
+        user3.setName("Modelo Especial");
+        user3.setDesignation("Grupo Corona");
+        user3.setLocation("12");
+        results.add(user3);
+        user1.setName("Tequila Azul");
+        user1.setDesignation("Some Brand");
+        user1.setLocation("2");
+        results.add(user1);
+        return results;
+    }
 
 
 
@@ -167,10 +205,6 @@ public  class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
 
