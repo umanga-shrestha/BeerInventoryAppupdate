@@ -75,8 +75,8 @@ public class NewDrinkActitvity extends AppCompatActivity {
         quantity = editText_11.getText().toString();
         alcohol_percentage = editText_12.getText().toString();
 
-        breweryInfo = name + " " + brand + " " + location + " " + style + " " + barcode + " " + volume + " " +
-                quantity + " " + alcohol_percentage;
+        breweryInfo = name + "," + brand + "," + location + "," + style + "," + barcode + "," + volume + "," +
+                quantity + "," + alcohol_percentage;
 
         final File inventory = new File(Environment.getExternalStorageDirectory()+"/beerInventory/data.txt");
         //FileWriter fileWriter = new FileWriter(breweryInfo, true);
