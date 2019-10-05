@@ -112,6 +112,7 @@ public  class MainActivity extends AppCompatActivity
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 //retrieve scan result
+        super.onActivityResult(requestCode, resultCode, intent);
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
         if (scanningResult != null) {
@@ -121,9 +122,7 @@ public  class MainActivity extends AppCompatActivity
             Log.d("scanContent", scanContent);
             String scanFormat = scanningResult.getFormatName();
             Log.d("scanFormat", scanFormat);
-        }
-
-        else{
+        } else {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
@@ -187,8 +186,8 @@ public  class MainActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_settings) {
-
-
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

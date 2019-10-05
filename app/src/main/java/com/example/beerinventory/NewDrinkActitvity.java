@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import java.nio.file.Files;
 import java.io.*;
+
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class NewDrinkActitvity extends AppCompatActivity {
@@ -68,6 +70,11 @@ public class NewDrinkActitvity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_drink);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         // Filter out special characters
         editText = (EditText) findViewById(R.id.editText_1);
