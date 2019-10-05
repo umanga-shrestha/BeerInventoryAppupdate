@@ -95,7 +95,9 @@ public  class MainActivity extends AppCompatActivity
 //we have a result
 
             String scanContent = scanningResult.getContents(); // <------- BARCODE
+            Log.d("scanContent", scanContent);
             String scanFormat = scanningResult.getFormatName();
+            Log.d("scanFormat", scanFormat);
         }
 
         else{
