@@ -186,10 +186,8 @@ public  class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, NewDrinkActitvity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_settings) {
 
-
-        } else if (id == R.id.nav_tools) {
 
         }
 
