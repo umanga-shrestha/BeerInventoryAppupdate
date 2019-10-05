@@ -3,6 +3,8 @@ package com.example.beerinventory;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +33,19 @@ public class NewDrinkActitvity extends AppCompatActivity {
     private String breweryInfo;
     private Button addDrinkButton;
 
+    // Define Text Field Filter
+    private EditText editText;
+    private String blockCharacterSet = "<>,~#^|$%&*!?@+=;:{}[]`";
+    private InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+            if (charSequence != null && blockCharacterSet.contains(("" + charSequence))) {
+                return "";
+            }
+            return null;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         File myDir = new File(Environment.getExternalStorageDirectory()+"/beerInventory");
@@ -53,6 +68,24 @@ public class NewDrinkActitvity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_drink);
+
+        // Filter out special characters
+        editText = (EditText) findViewById(R.id.editText_1);
+        editText.setFilters(new InputFilter[] { filter });
+        editText = (EditText) findViewById(R.id.editText_2);
+        editText.setFilters(new InputFilter[] { filter });
+        editText = (EditText) findViewById(R.id.editText_4);
+        editText.setFilters(new InputFilter[] { filter });
+        editText = (EditText) findViewById(R.id.editText_7);
+        editText.setFilters(new InputFilter[] { filter });
+        editText = (EditText) findViewById(R.id.editText_9);
+        editText.setFilters(new InputFilter[] { filter });
+        editText = (EditText) findViewById(R.id.editText_10);
+        editText.setFilters(new InputFilter[] { filter });
+        editText = (EditText) findViewById(R.id.editText_11);
+        editText.setFilters(new InputFilter[] { filter });
+        editText = (EditText) findViewById(R.id.editText_12);
+        editText.setFilters(new InputFilter[] { filter });
     }
 
     public void addThisDrink(View view) {
