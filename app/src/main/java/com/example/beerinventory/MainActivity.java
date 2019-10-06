@@ -2,8 +2,6 @@ package com.example.beerinventory;
 
 import android.os.Bundle;
 import java.io.*;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Environment;
 import android.util.Log;
@@ -18,16 +16,10 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import android.app.Activity;
 import android.content.Intent;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-import java.io.File;
 import java.util.ArrayList;
 
 
