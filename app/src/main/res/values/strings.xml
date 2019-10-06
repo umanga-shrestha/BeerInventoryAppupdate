@@ -2,8 +2,8 @@
     <string name="app_name">Beer Inventory</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Jacob Wilkins</string>
-    <string name="nav_header_subtitle">jacob.wilkins@mavs.uta.edu</string>
+    <string name="nav_header_title">Beer Inventory</string>
+    <string name="nav_header_subtitle">University of Texas at Arlington</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
