@@ -2,8 +2,6 @@ package com.example.beerinventory;
 
 import android.os.Bundle;
 import java.io.*;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Environment;
 import android.util.Log;
@@ -18,36 +16,17 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import android.app.Activity;
 import android.content.Intent;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-import java.io.File;
-
-
-/* this is a comment */
+import java.util.ArrayList;
 
 
 
 
 public  class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-
-    //********* Dummy Data List View
-
-    String[] dataArray = {"Bud Light" ,
-            "Miller Lite",
-            "Corona",
-            "Victoria",
-            "Heineken" ,
-            "Jose Cuervo" ,
-            "Tequila Azul"};
 
 
 
@@ -57,17 +36,18 @@ public  class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // List View
-        ListView listView = findViewById(R.id.listViewID);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, dataArray);
-        listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ArrayList userList = getListData();
+        final ListView lv = (ListView) findViewById(R.id.user_list);
+        lv.setAdapter(new CustomListAdapter(this, userList));
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("Awesome", dataArray[position]);
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                ListItem user = (ListItem) lv.getItemAtPosition(position);
+                Toast.makeText(MainActivity.this, "Selected :" + " " + user.getName()+", "+ user.getLocation(), Toast.LENGTH_SHORT).show();
             }
         });
+
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -84,11 +64,49 @@ public  class MainActivity extends AppCompatActivity
 
 
 
+    private ArrayList getListData() {
+        ArrayList<ListItem> results = new ArrayList<>();
+
+        String name;
+        String brand;
+        String quant;
+        String [] temp;
+
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(Environment.getExternalStorageDirectory()+"/beerInventory/data.txt"));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                ListItem user = new ListItem();
+                temp = line.split(",");
+                name = temp[0];
+                brand = temp[1];
+                quant = temp[6];
+                user.setName(name);
+                user.setDesignation(brand);
+                user.setLocation(quant);
+                results.add(user);
+            }
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return results;
+
+
+
+    }
+
+
+
 
 //**************** This Retrieves the Data form the Scan ****************************
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 //retrieve scan result
+        super.onActivityResult(requestCode, resultCode, intent);
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
         if (scanningResult != null) {
@@ -98,9 +116,7 @@ public  class MainActivity extends AppCompatActivity
             Log.d("scanContent", scanContent);
             String scanFormat = scanningResult.getFormatName();
             Log.d("scanFormat", scanFormat);
-        }
-
-        else{
+        } else {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
@@ -163,15 +179,9 @@ public  class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, NewDrinkActitvity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) {
-
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
