@@ -1,20 +1,17 @@
 package com.example.beerinventory;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-
-import java.io.*;
-
 import android.os.Environment;
-import android.util.Log;
-import android.view.View;
 
-import androidx.core.app.ActivityCompat;
+import android.util.Log;
+
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -28,16 +25,24 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import android.content.Intent;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.Button;
 
-import java.util.ArrayList;
-
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.File;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
+    ListView listView;
+    ListViewAdapter listViewAdapter;
+    boolean decision;
 
     //**************** Main Activity Shit******************
     @Override
@@ -45,18 +50,33 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listView = (ListView) findViewById(R.id.user_list);
+        listViewAdapter = new ListViewAdapter(MainActivity.this, R.layout.list_row);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                ListItem user = (ListItem) listView.getItemAtPosition(position);
+                Toast.makeText(MainActivity.this, "Selected :" + " " + user.getName() + "," + position + ", " + user.getBarcode(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, DrinkActivity.class);
+                intent.putExtra("barcode", user.getBarcode());
+                startActivity(intent);
+            }
+        });
 
-        ArrayList userList = getListData();
+
+        getData();
+
+        //Alex's code for ListView
+        /*ArrayList userList = getListData();
         final ListView lv = (ListView) findViewById(R.id.user_list);
         lv.setAdapter(new CustomListAdapter(this, userList));
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 ListItem user = (ListItem) lv.getItemAtPosition(position);
-                Toast.makeText(MainActivity.this, "Selected :" + " " + user.getName() + ", " + user.getLocation(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Selected :" + " " + user.getName()+", "+ user.getLocation(), Toast.LENGTH_SHORT).show();
             }
-        });
-
+        });*/
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -69,62 +89,44 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-
-    private ArrayList getListData() {
-        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-          final int REQUEST_EXTERNAL_STORAGE = 1;
-          String[] PERMISSIONS_STORAGE = {
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        };
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE
-            );
+    public void getData() {
+        listViewAdapter.clear();
+        getListData();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String name = bundle.getString("name");
+            String brand = bundle.getString("brand");
+            String quantity = bundle.getString("quantity");
         }
-        ArrayList<ListItem> results = new ArrayList<>();
+        listView.setAdapter(listViewAdapter);
+    }
 
+    public void getListData() {
         String name;
         String brand;
-        String quant;
+        String quantity;
+        String barcode;
         String[] temp;
-
         BufferedReader reader;
+
         try {
-            String path = Environment.getExternalStorageDirectory() + "/beerInventory/data.txt";
-            File file = new File(Environment.getExternalStorageDirectory() + "/beerInventory/data.txt");
-
-            System.out.println(Environment.getExternalStorageDirectory());
-            if (!file.exists()) {
-                File file1 = new File(Environment.getExternalStorageDirectory() + "/beerInventory");
-                file1.mkdirs();
-                file.createNewFile();
-            }
-            reader = new BufferedReader(new FileReader(path));
-
-
+            reader = new BufferedReader(new FileReader(new File(Environment.getExternalStorageDirectory() + "/beerInventory/data.txt")));
             String line = null;
             while ((line = reader.readLine()) != null) {
-                ListItem user = new ListItem();
-                temp = line.split(",",-1);
+                temp = line.split(",");
                 name = temp[0];
                 brand = temp[1];
-                quant = temp[6];
-                user.setName(name);
-                user.setDesignation(brand);
-                user.setLocation(quant);
-                results.add(user);
+                quantity = temp[6];
+                barcode = temp[4];
+                ListItem user = new ListItem(name, brand, quantity, barcode);
+                listViewAdapter.add(user);
             }
+            reader.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return results;
-
-
     }
-
 
 //**************** This Retrieves the Data form the Scan ****************************
 
@@ -134,20 +136,105 @@ public class MainActivity extends AppCompatActivity
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
         if (scanningResult != null) {
- String scanContent = scanningResult.getContents(); // <------- BARCODE
-            Log.d("scanContent", scanContent.toString());
-            String scanFormat = scanningResult.getFormatName();
-            Log.d("scanFormat", scanFormat);
-            Intent intent2 = new Intent(MainActivity.this, NewDrinkActitvity.class);
-            intent2.putExtra("barcode", scanningResult.getContents());
-            startActivity(intent2);
+//we have a result
+            final String scanContent = scanningResult.getContents(); // <------- BARCODE
+            // Log.d("scanContent", scanContent);
+            // String scanFormat = scanningResult.getFormatName();
+            // Log.d("scanFormat", scanFormat);
+            String[] temp;
+            BufferedReader reader;
+
+            final String codigo = scanContent.replaceAll("[\\n\\t\\s]", "");
+            try {
+                File myDir = new File(Environment.getExternalStorageDirectory() + "/beerInventory");
+                if (!myDir.exists()) {
+                    myDir.mkdir();
+                }
+                File inventory = new File(Environment.getExternalStorageDirectory() + "/beerInventory/data.txt");
+                try {
+                    inventory.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                reader = new BufferedReader(new FileReader(new File(Environment.getExternalStorageDirectory() + "/beerInventory/data.txt")));
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    temp = line.split(",");
+                    String bar = temp[4].replaceAll("[\\n\\t\\s]", "");
+
+                    if (bar.equals(codigo)) {
+                        decision = true;
+                        break;
+                    }
+                    if (!bar.equals(codigo)) {
+                        decision = false;
+                    }
+                }
+
+
+                if (decision) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Barcode Found", Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    Intent display = new Intent(MainActivity.this, DisplayDrink.class);
+                    display.putExtra("barcode", codigo);
+                    startActivity(display);
+
+                }
+
+                if (!decision) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Barcode Not Found", Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                    alertDialogBuilder.setTitle("Would you like to add a new drink?");
+
+                    alertDialogBuilder.setCancelable(false);
+                    alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            //If this button is pressed then we go to new drink activity
+
+                            Intent intent = new Intent(MainActivity.this, DrinkActivity.class);
+                            intent.putExtra("barcode", codigo);
+                            startActivity(intent);
+
+                        }
+                    });
+                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            //If NO is pressed just close dialog
+                            dialog.cancel();
+                        }
+                    });
+
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    // Show the dialog
+                    alertDialog.show();
+                }
+
+
+                reader.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         } else {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
-
 
     //**************OTHER STUFF***********************************
     @Override
@@ -176,7 +263,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(MainActivity.this, DrinkActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -192,9 +280,9 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
             IntentIntegrator scanIntegrator = new IntentIntegrator(this);
             scanIntegrator.initiateScan();
-            System.out.println();
+
         } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent(MainActivity.this, NewDrinkActitvity.class);
+            Intent intent = new Intent(MainActivity.this, DrinkActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_settings) {

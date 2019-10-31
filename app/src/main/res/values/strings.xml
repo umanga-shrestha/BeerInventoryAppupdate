@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Beer Inventory</string>
+    <string name="app_name">SwiftScan</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Beer Inventory</string>
+    <string name="nav_header_title">Swift Scan</string>
     <string name="nav_header_subtitle">University of Texas at Arlington</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -31,4 +31,5 @@
     <!-- Personal Preferences -->
     <string name="name_title">Your Name</string>
     <string name="email_title">Your Email</string>
+    <string name="update">UPDATE</string>
 </resources>

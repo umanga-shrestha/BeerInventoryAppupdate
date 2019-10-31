@@ -2,9 +2,16 @@ package com.example.beerinventory;
 
 public class ListItem {
     private String name;
-    private String designation;
-    private String location;
+    private String brand;
+    private String quantity;
+    private String barcode;
 
+    public ListItem (String name, String brand, String quantity, String barcode) {
+        this.name = name;
+        this.brand = brand;
+        this.quantity = quantity;
+        this.barcode = barcode;
+    }
 
     public String getName() {
         return name;
@@ -12,16 +19,18 @@ public class ListItem {
     public void setName(String name) {
         this.name = name;
     }
-    public String getDesignation() {
-        return designation;
+
+    public String getBrand() {
+        return brand;
     }
-    public void setDesignation(String designation) {
-        this.designation = designation;
+    public void setBrand(String brand) { this.brand = brand; }
+
+    public String getQuantity() {
+        return quantity;
     }
-    public String getLocation() {
-        return location;
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
-    public void setLocation(String location) {
-        this.location = location;
-    }
+
+    public String getBarcode() {return barcode; }
 }

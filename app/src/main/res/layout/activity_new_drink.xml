@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewDrinkActitvity">
+    tools:context=".NewDrinkActivity">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="426dp"
+                    android:layout_width="409dp"
                     android:layout_height="match_parent">
 
                     <EditText
@@ -45,7 +45,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        android:importantForAutofill="no" />
 
                     <ImageView
                         android:id="@+id/imageView30"
@@ -101,13 +102,13 @@
                 android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="420dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent">
 
                     <EditText
                         android:id="@+id/editText_4"
-                        android:layout_width="219dp"
-                        android:layout_height="50dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="124dp"
                         android:layout_marginBottom="8dp"
@@ -148,7 +149,7 @@
                         android:layout_marginEnd="124dp"
                         android:layout_marginBottom="8dp"
                         android:ems="10"
-                        android:hint="Style"
+                        android:hint="Type"
                         android:inputType="textPersonName"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -220,7 +221,7 @@
                         android:layout_marginEnd="128dp"
                         android:layout_marginBottom="8dp"
                         android:ems="10"
-                        android:hint="Volume"
+                        android:hint="Volume (Fl Oz)"
                         android:inputType="textPersonName"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -313,29 +314,6 @@
             </TableRow>
 
             <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/button_addDrinkImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add drink image"
-                    android:onClick="addThisDrinkImage"/>
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/drinkImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </TableRow>
-
-            <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -343,8 +321,10 @@
                     android:id="@+id/button_addDrink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="addThisDrink"
-                    android:text="Add drink" />
+                    android:layout_marginTop="8dp"
+                    android:layout_centerHorizontal="true"
+                    android:text="Add drink"
+                    android:background="@drawable/button_design"/>
             </TableRow>
         </TableLayout>
     </ScrollView>
