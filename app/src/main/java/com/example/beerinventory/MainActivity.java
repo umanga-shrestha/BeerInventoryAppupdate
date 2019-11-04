@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity
                             "Barcode Found", Toast.LENGTH_SHORT);
                     toast.show();
 
-                    Intent display = new Intent(MainActivity.this, DisplayDrink.class);
+                    Intent display = new Intent(MainActivity.this, DrinkActivity.class);
                     display.putExtra("barcode", codigo);
                     startActivity(display);
 
