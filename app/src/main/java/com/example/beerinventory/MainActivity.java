@@ -35,6 +35,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+
+import static java.util.Collections.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,7 +55,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         listView = (ListView) findViewById(R.id.user_list);
         listViewAdapter = new ListViewAdapter(MainActivity.this, R.layout.list_row);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -108,6 +113,7 @@ public class MainActivity extends AppCompatActivity
         String barcode;
         String[] temp;
         BufferedReader reader;
+        ArrayList<ArrayList<String>> tempList = new ArrayList<ArrayList<String>>();
 
         try {
             reader = new BufferedReader(new FileReader(new File(Environment.getExternalStorageDirectory() + "/beerInventory/data.txt")));
@@ -118,13 +124,63 @@ public class MainActivity extends AppCompatActivity
                 brand = temp[1];
                 quantity = temp[6];
                 barcode = temp[4];
-                ListItem user = new ListItem(name, brand, quantity, barcode);
-                listViewAdapter.add(user);
+
+                tempList.add(new ArrayList<String>(Arrays.asList(name, brand, quantity, barcode)));
+
+                //Please DONT delete the below lines of code even though they are commented out - Zohar
+                /*if (!quantity.equals("0")) {
+                    ListItem user = new ListItem(name, brand, quantity, barcode);
+                    listViewAdapter.add(user);
+                }*/
             }
+
+            sortedData(tempList);
+            clearData(tempList);
             reader.close();
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void sortedData(ArrayList<ArrayList<String>> dataList)
+    {
+        String name;
+        String brand;
+        String quantity;
+        String barcode;
+        int row;
+
+        Collections.sort(dataList, new Comparator<ArrayList<String>>() {
+            @Override
+            public int compare(ArrayList<String> name1, ArrayList<String> name2) {
+                return name1.get(0).compareTo(name2.get(0));
+            }
+        });
+
+        for (row = 0; row < dataList.size(); row++)
+        {
+            int col = 0;
+
+            name = dataList.get(row).get(col);
+            brand = dataList.get(row).get(col+=1);
+            quantity = dataList.get(row).get(col+=1);
+            barcode = dataList.get(row).get(col+=1);
+
+            if (!quantity.equals("0")) {
+                ListItem user = new ListItem(name, brand, quantity, barcode);
+                listViewAdapter.add(user);
+            }
+        }
+    }
+
+    public void clearData(ArrayList<ArrayList<String>> dataList)
+    {
+        int row;
+
+        for (row = 0; row < dataList.size(); row++)
+        {
+            dataList.get(row).clear();
         }
     }
 
@@ -179,7 +235,7 @@ public class MainActivity extends AppCompatActivity
                             "Barcode Found", Toast.LENGTH_SHORT);
                     toast.show();
 
-                    Intent display = new Intent(MainActivity.this, DrinkActivity.class);
+                    Intent display = new Intent(MainActivity.this, DisplayDrink.class);
                     display.putExtra("barcode", codigo);
                     startActivity(display);
 
