@@ -1,16 +1,10 @@
 package com.example.beerinventory;
 
 public class ListItem {
-    private String name;
-    private String brand;
-    private String quantity;
-    private String barcode;
+    private String name, brand, quantity, barcode;
 
     public ListItem (String name, String brand, String quantity, String barcode) {
-        this.name = name;
-        this.brand = brand;
-        this.quantity = quantity;
-        this.barcode = barcode;
+        this.name = name; this.brand = brand; this.quantity = quantity; this.barcode = barcode;
     }
 
     public String getName() {
